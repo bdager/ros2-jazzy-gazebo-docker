@@ -1,0 +1,14 @@
+# ROS2 build artifacts
+build/
+install/
+log/
+
+# Colcon defaults
+*.pyc
+__pycache__/
+
+# VSCode (optional)
+.vscode/
+
+# Environment overrides
+.env

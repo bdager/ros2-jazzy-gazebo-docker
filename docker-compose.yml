@@ -1,0 +1,37 @@
+services:
+  ros2:
+    build: .
+    image: ros2-jazzy-gazebo:latest
+    container_name: ${CONTAINER_NAME}
+
+    network_mode: host
+    ipc: host
+
+    # Match host user to avoid root-owned files
+    user: "${UID}:${GID}"
+
+    environment:
+      DISPLAY: ${DISPLAY}
+      QT_X11_NO_MITSHM: "1"
+      ROS_LOCALHOST_ONLY: "1"
+      XDG_RUNTIME_DIR: /tmp/runtime-${UID}
+
+      # Optional TurtleBot model
+      TURTLEBOT3_MODEL: ${TURTLEBOT3_MODEL}
+
+    volumes:
+      # X11 socket for GUI apps
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+
+      # Workspace (live development)
+      - ${WORKSPACE}:/home/ros2_ws
+
+      # Xauthority passthrough
+      - ${HOME}/.Xauthority:/home/user/.Xauthority:rw
+
+    working_dir: /home/ros2_ws
+
+    stdin_open: true
+    tty: true
+
+    command: bash
